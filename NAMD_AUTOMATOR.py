@@ -1,5 +1,5 @@
 #Project Title - NAMD-Automator: A stand-alone tool for Automating Configuration files for NAMD Simulations.
-#Author - Mr. Manojit Mazumder & Co-author - Dr. Rohan J Meshram
+#Author - Mr. Manojit Mazumder
 #Dated - 13.05.2025
 
 import os
@@ -3983,3 +3983,4 @@ if __name__ == '__main__':
     main_window.show()
 
     sys.exit(app.exec())
+

@@ -1,3 +1,7 @@
+#Project Title - NAMD-Automator: A stand-alone tool for Automating Configuration files for NAMD Simulations.
+#Author - Mr. Manojit Mazumder & Co-author - Dr. Rohan J Meshram
+#Dated - 13.05.2025
+
 import os
 import time
 import sys
@@ -3977,4 +3981,5 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     main_window = MainWindow()
     main_window.show()
+
     sys.exit(app.exec())

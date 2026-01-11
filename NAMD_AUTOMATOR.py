@@ -2,6 +2,7 @@
 #Author - Mr. Manojit Mazumder
 #Dated - 13.05.2025
 
+## Importing required libraries and modules ##
 import os
 import time
 import sys
@@ -13,15 +14,13 @@ from PyQt5.QtWidgets import (QTextEdit, QApplication, QWidget, QLabel, QLineEdit
 from PyQt5.QtGui import QIcon, QPixmap  
 
 
-
+## Use the script directory for development ##
 def get_resource_path(filename):
     if hasattr(sys, '_MEIPASS'):
         return os.path.join(sys._MEIPASS, filename)
-    # Use the script directory for development
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), filename)
 
- 
-
+## Worker class to thread the application for smooth operation ## 
 class Worker(QThread):
     finished = pyqtSignal()
     error = pyqtSignal(str)
@@ -47,9 +46,7 @@ class Worker(QThread):
             self.error.emit(str(e))
 
 
-
-
-       
+## Defining MINIMIZATION TAB using class "MinimizationGUI" ##         
 class MinimizationGUI(QWidget):
     def __init__(self):
         super().__init__()
@@ -63,7 +60,7 @@ class MinimizationGUI(QWidget):
 
     def initUI(self):
         
-        
+        ## Tab fields defined for MINIMIZATON TAB ##
         self.min_psf_label = QLabel('PSF File', self)
         self.min_psf_input = QLineEdit(self)
         self.min_psf_button = QPushButton('Browse', self)
@@ -308,8 +305,7 @@ class MinimizationGUI(QWidget):
         self.extra_input = QTextEdit(self)
         self.extra_input.setPlaceholderText("Enter parameters here if necessary...")
 
-        
-
+        ## dDefining the layout for the tabs mentioned above ##
         psf_layout = QHBoxLayout()
         psf_layout.addWidget(self.min_psf_label)
         psf_layout.addWidget(self.min_psf_input)
@@ -459,8 +455,7 @@ class MinimizationGUI(QWidget):
         extra_label_layout.addWidget(self.extra_label)
         extra_label_layout.addWidget(self.extra_input)
 
-        
-
+        ## Defining TAB layout ## 
         main_layout = QVBoxLayout()
         main_layout.addLayout(psf_layout)
         main_layout.addLayout(pdb_layout)
@@ -499,15 +494,13 @@ class MinimizationGUI(QWidget):
         self.setLayout(main_layout)
 
 
-
-
-
         self.min_param_files_label.setEnabled(False)
         self.min_param_files_input.setEnabled(False)
         self.min_param_files_button.setEnabled(False)
 
         
-
+    ## Browse button functionality (toggling) for the MINIMIZATION TAB ##
+  
     def browsePsfFile(self):
         file_name, _ = QFileDialog.getOpenFileName(self, 'Open PSF File', '', 'PSF Files (*.psf)')
         if file_name:
@@ -532,7 +525,7 @@ class MinimizationGUI(QWidget):
         self.min_param_files_label.setEnabled(is_checked)
         self.min_param_files_input.setEnabled(is_checked)
         self.min_param_files_button.setEnabled(is_checked)
-        # Also update in other forms
+        
         if hasattr(self, 'heating_form') and self.heating_form:
             self.heating_form.heat_param_checkbox.setChecked(is_checked)
             self.heating_form.heat_param_files_label.setEnabled(is_checked)
@@ -573,7 +566,7 @@ class MinimizationGUI(QWidget):
 
 
 
-
+    ## Configuration file creation section for MINIMIZATION TAB ##
 
     def submitForm(self):
         psf_file = self.min_psf_input.text()
@@ -764,8 +757,7 @@ class MinimizationGUI(QWidget):
 
 
 
-
-
+## Defining HEATING TAB using class "HeatingGUI" ## 
 class HeatingGUI(QWidget):
     def __init__(self):
         super().__init__()
@@ -774,7 +766,7 @@ class HeatingGUI(QWidget):
         
     def initUI(self):
         
-
+        ## Heating tab fields defined ##
         self.heat_psf_label = QLabel('PSF File', self)
         self.heat_psf_input = QLineEdit(self)
 
@@ -857,17 +849,14 @@ class HeatingGUI(QWidget):
         self.heat_pme_grid_x_input = QSpinBox(self)
         self.heat_pme_grid_x_input.setRange(1, 512)
         
-        
         self.heat_pme_grid_y_label = QLabel('PME Grid Size Y', self)
         self.heat_pme_grid_y_input = QSpinBox(self)
         self.heat_pme_grid_y_input.setRange(1, 512)
-        
         
         self.heat_pme_grid_z_label = QLabel('PME Grid Size Z', self)
         self.heat_pme_grid_z_input = QSpinBox(self)
         self.heat_pme_grid_z_input.setRange(1, 512)
         
-
         self.heat_timestep_label = QLabel('Time Step', self)
         self.heat_timestep_input = QDoubleSpinBox(self)
         self.heat_timestep_input.setRange(1, 2)
@@ -1026,17 +1015,14 @@ class HeatingGUI(QWidget):
         self.heat_cell_origin_x_input.setDecimals(18)
         self.heat_cell_origin_x_input.setRange(-999.999999999999999999, 999.999999999999999999)
         
-
         self.heat_cell_origin_y_input = QDoubleSpinBox(self)
         self.heat_cell_origin_y_input.setDecimals(18)
         self.heat_cell_origin_y_input.setRange(-999.999999999999999999, 999.999999999999999999)
         
-
         self.heat_cell_origin_z_input = QDoubleSpinBox(self)
         self.heat_cell_origin_z_input.setDecimals(18)
         self.heat_cell_origin_z_input.setRange(-999.999999999999999999, 999.999999999999999999)
         
-
         self.heat_wrapping_water_combo = QComboBox(self)
         self.heat_wrapping_water_label = QLabel('Wrapping Water', self)
         self.heat_wrapping_water_combo.addItems(['on', 'off'])
@@ -1049,7 +1035,7 @@ class HeatingGUI(QWidget):
         self.heating_button = QPushButton('Create Heating Configuration file', self)
         self.heating_button.clicked.connect(self.heatingAction)
 
-
+        ## Layout of the Heating Tab ##
         psf_layout = QHBoxLayout()
         psf_layout.addWidget(self.heat_psf_label)
         psf_layout.addWidget(self.heat_psf_input)
@@ -1225,7 +1211,7 @@ class HeatingGUI(QWidget):
         extra_label_layout.addWidget(self.extra_label)
         extra_label_layout.addWidget(self.extra_input)
 
-
+        ## Main layout for the Heating Tab ##
         main_layout = QVBoxLayout()
         main_layout.addLayout(psf_layout)
         main_layout.addLayout(coor_layout)
@@ -1270,21 +1256,17 @@ class HeatingGUI(QWidget):
 
         self.setLayout(main_layout)
 
-
-
         self.heat_param_files_label.setEnabled(False)
         self.heat_param_files_input.setEnabled(False)
         self.heat_param_files_button.setEnabled(False)
 
-      
-
-
+    ## Toggle parameters section for the HEATING TAB ##      
     def toggleParamFiles(self):
         is_checked = self.heat_param_checkbox.isChecked()
         self.heat_param_files_label.setEnabled(is_checked)
         self.heat_param_files_input.setEnabled(is_checked)
         self.heat_param_files_button.setEnabled(is_checked)
-        # Also update in other forms
+        
         if hasattr(self, 'minimization_form') and self.minimization_form:
             self.minimization_form.min_param_checkbox.setChecked(is_checked)
             self.minimization_form.min_param_files_label.setEnabled(is_checked)
@@ -1311,7 +1293,7 @@ class HeatingGUI(QWidget):
         is_checked = self.heat_switch_checkbox.isChecked()
         self.heat_switch_distance_input.setEnabled(is_checked)
 
-
+    ## Configuration file creation section for HEATING TAB ##
     def submitForm(self):
         psf_file = self.heat_psf_input.text()
         coor_file = self.heat_coor_input.text()
@@ -1505,9 +1487,7 @@ class HeatingGUI(QWidget):
             QMessageBox.information(self, 'Heating', 'Heating file generated successfully.')
 
 
-
-
-
+## Defining the EQUILIBRATION TAB using class "EquilibriumGUI" ##
 class EquilibriumGUI(QWidget):
     def __init__(self):
         super().__init__()
@@ -1516,7 +1496,7 @@ class EquilibriumGUI(QWidget):
 
     def initUI(self):
 
-
+        ## Defining field tabs for the EQUILIBRATION TAB ##
         self.equil_psf_label = QLabel('PSF File', self)
         self.equil_psf_input = QLineEdit(self)
 
@@ -1843,7 +1823,7 @@ class EquilibriumGUI(QWidget):
         self.equilibrium_button.clicked.connect(self.equilibriumAction)
 
 
-
+        ## Defining the layout of the Equilibration Tab ##
         psf_layout = QHBoxLayout()
         psf_layout.addWidget(self.equil_psf_label)
         psf_layout.addWidget(self.equil_psf_input)
@@ -2029,7 +2009,6 @@ class EquilibriumGUI(QWidget):
         dcd_file_layout.addWidget(self.equil_dcd_file_label)
         dcd_file_layout.addWidget(self.equil_dcd_file_input)
         
-
         dcd_freq_layout = QHBoxLayout()
         dcd_freq_layout.addWidget(self.equil_dcd_freq_label)
         dcd_freq_layout.addWidget(self.equil_dcd_freq_input)
@@ -2069,8 +2048,7 @@ class EquilibriumGUI(QWidget):
         extra_label_layout.addWidget(self.extra_input)
 
 
-
-
+        ## Defining the design layout (main layout) for the EQUILIBRATION TAB ##
         main_layout = QVBoxLayout()
         main_layout.addLayout(psf_layout)
         main_layout.addLayout(coor_layout)
@@ -2128,7 +2106,6 @@ class EquilibriumGUI(QWidget):
         self.setLayout(main_layout)
 
 
-
         self.equil_param_files_label.setEnabled(False)
         self.equil_param_files_input.setEnabled(False)
         self.equil_param_files_button.setEnabled(False)
@@ -2138,12 +2115,13 @@ class EquilibriumGUI(QWidget):
         self.setWindowTitle('Equilibration GUI')
         self.show()
 
+    ## Toggling parameters set for Equilibration section ##
     def toggleParamFiles(self):
         is_checked = self.equil_param_checkbox.isChecked()
         self.equil_param_files_label.setEnabled(is_checked)
         self.equil_param_files_input.setEnabled(is_checked)
         self.equil_param_files_button.setEnabled(is_checked)
-        # Also update in other forms
+        
         if hasattr(self, 'minimization_form') and self.minimization_form:
             self.minimization_form.min_param_checkbox.setChecked(is_checked)
             self.minimization_form.min_param_files_label.setEnabled(is_checked)
@@ -2170,7 +2148,7 @@ class EquilibriumGUI(QWidget):
         is_checked = self.equil_switch_checkbox.isChecked()
         self.equil_switch_distance_input.setEnabled(is_checked)
 
-
+    ## Configuration file creation for EQUILIBRATION TAB ##
     def submitForm(self):
         psf_file = self.equil_psf_input.text()
         coor_file = self.equil_coor_input.text()
@@ -2401,7 +2379,7 @@ class EquilibriumGUI(QWidget):
             QMessageBox.information(self, 'Equilibration', 'Equilibration file generated successfully.')
 
 
-
+## Defining the PROUDCTION TAB using the class "ProductionGUI" ##
 class ProductionGUI(QWidget):
     def __init__(self):
         super().__init__()
@@ -2410,7 +2388,8 @@ class ProductionGUI(QWidget):
 
     def initUI(self):
         
-
+        ## Field tab defined for Production Tab ##
+      
         self.psf_label = QLabel('PSF File', self)
         self.psf_input = QLineEdit(self)
 
@@ -2730,7 +2709,7 @@ class ProductionGUI(QWidget):
         self.production_button = QPushButton('Create Production Configuration file', self)
         self.production_button.clicked.connect(self.productionAction)
         
-
+        ## Defining the field layouts for Production Tab ##
         psf_layout = QHBoxLayout()
         psf_layout.addWidget(self.psf_label)
         psf_layout.addWidget(self.psf_input)
@@ -2946,7 +2925,7 @@ class ProductionGUI(QWidget):
         extra_label_layout.addWidget(self.extra_label)
         extra_label_layout.addWidget(self.extra_input)
 
-
+        ## Main layout for the Production Tab ##
         main_layout = QVBoxLayout()
         main_layout.addLayout(psf_layout)
         main_layout.addLayout(coor_layout)
@@ -3001,8 +2980,6 @@ class ProductionGUI(QWidget):
 
         self.setLayout(main_layout)
 
-
-
         self.param_files_label.setEnabled(False)
         self.param_files_input.setEnabled(False)
         self.param_files_button.setEnabled(False)
@@ -3011,6 +2988,7 @@ class ProductionGUI(QWidget):
         self.setWindowTitle('Equilibration GUI')
         self.show()
 
+    ## Toggling parameters for the Production Tab ##
     def toggleParamFiles(self):
         is_checked = self.param_checkbox.isChecked()
         self.param_files_label.setEnabled(is_checked)
@@ -3044,7 +3022,7 @@ class ProductionGUI(QWidget):
         self.switch_distance_input.setEnabled(is_checked)
 
 
-
+    ## Configuration file creation section for PRODUCTION TAB ##
     def submitForm(self):
         psf_file = self.psf_input.text()
         coor_file = self.coor_input.text()
@@ -3279,7 +3257,9 @@ class ProductionGUI(QWidget):
             QMessageBox.information(self, 'Production', 'Production file generated successfully.')
 
 
+## This section defines the processor usage field of the MANAGE RESOURCE TAB ##
 
+## class "CpuCoreDialog" for checking CPU usage in Manage Resource Tab ## 
 class CpuCoreDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -3303,7 +3283,7 @@ class CpuCoreDialog(QDialog):
 
         self.setLayout(layout)
 
-
+## Defining the SET DIRECTORY TAB using the class "DirectorySetupTab" ##
 class DirectorySetupTab(QWidget):
     def __init__(self):
         super().__init__()
@@ -3355,7 +3335,7 @@ class DirectorySetupTab(QWidget):
         if self.next_callback:
             self.next_callback()
 
-
+## Defined RUN button using "RunTab" class for the Manage Resources Tab ##
 class RunTab(QWidget):
     def __init__(self):
         super().__init__()
@@ -3363,6 +3343,7 @@ class RunTab(QWidget):
         self.directory_setup_tab = None  
         layout = QVBoxLayout()
 
+        ## NAMD version selection section ##
         self.namd_version_combo = QComboBox()
         self.namd_version_combo.addItems(["2", "3"])
         self.namd_version_combo.setCurrentIndex(0)
@@ -3370,7 +3351,7 @@ class RunTab(QWidget):
         namd_version_layout.addWidget(QLabel("Select NAMD Version:"))
         namd_version_layout.addWidget(self.namd_version_combo)
 
-       
+        ## Value selection section for CPU usage in simulation ##
         self.cpu_cores_spinbox = QSpinBox()
         self.cpu_cores_spinbox.setRange(1, os.cpu_count())
         self.cpu_cores_spinbox.setValue(4)  
@@ -3378,16 +3359,16 @@ class RunTab(QWidget):
         cpu_cores_layout.addWidget(QLabel("Number of CPU Cores:"))
         cpu_cores_layout.addWidget(self.cpu_cores_spinbox)
 
-        
         self.check_cores_button = QPushButton("Check Available Cores")
         self.check_cores_button.clicked.connect(self.open_cpu_core_dialog)
         cpu_cores_layout.addWidget(self.check_cores_button)
 
+        ## Saved configuration files selection section (in this section configuration files get browsed and selected)
         self.min_file_select_tab = QLineEdit(self)
         self.min_file_select_tab.setPlaceholderText("Select minimization file with .conf or .inp or .txt extension")
         self.min_file_select_button = QPushButton("Browse")
         self.min_file_select_button.clicked.connect(self.select_min_file)
-
+        
         min_file_layout = QHBoxLayout()
         min_file_layout.addWidget(QLabel("Select Minimization Configuration file:"))
         min_file_layout.addWidget(self.min_file_select_tab)
@@ -3423,11 +3404,11 @@ class RunTab(QWidget):
         prod_file_layout.addWidget(self.prod_file_select_tab)
         prod_file_layout.addWidget(self.prod_file_select_button)
         
-        
+
+        ## Run Button section ##
         self.run_button = QPushButton("Configure my Simulation")
         self.run_button.clicked.connect(self.run_simulations)
 
-        
         layout.addLayout(namd_version_layout)
         layout.addLayout(cpu_cores_layout)
         layout.addLayout(min_file_layout)
@@ -3491,8 +3472,6 @@ class RunTab(QWidget):
 
                 
                 batch_file = os.path.join(save_directory, "simulation.bat")
-
-                
                 batch_script = f"""@echo off
 echo Current directory: %CD%
 
@@ -3983,4 +3962,5 @@ if __name__ == '__main__':
     main_window.show()
 
     sys.exit(app.exec())
+
 
